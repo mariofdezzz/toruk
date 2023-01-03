@@ -60,8 +60,3 @@ export class Router implements IRouter {
 		];
 	}
 }
-
-/** Shortcut to create a new router handler. */
-export function httpRouter(init?: RouterInit): Handler {
-	return new Router(init).toHandler();
-}
