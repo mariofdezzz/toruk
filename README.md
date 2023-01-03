@@ -35,7 +35,7 @@ serve(router);
 
 ```ts
 import { httpRouter } from 'https://deno.land/x/toruk/mod.ts';
-import * as users from 'routes/users/:id.ts'
+import * as users from './routes/users/:id.ts'
 
 const router = httpRouter({
   routes: [
