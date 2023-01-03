@@ -7,9 +7,6 @@
       "lineWidth": 80,
       "singleQuote": true,
       "proseWrap": "preserve"
-    },
-    "files": {
-      "include": ["**/*.ts", "**/*.json"]
     }
   }
 }
