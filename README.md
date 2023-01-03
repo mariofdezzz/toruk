@@ -52,6 +52,6 @@ import { RouteHandler } from 'https://deno.land/x/toruk/mod.ts';
 export const path = '/users/:id';
 
 export const handler: RouteHandler<{ id: string }> = ({ params }) => {
-	return new Response(`User ${params.id}`);
+  return new Response(`User ${params.id}`);
 };
 ```
