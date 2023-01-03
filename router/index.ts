@@ -1,10 +1,12 @@
 import type { Handler } from 'http';
 import type { IRouter, PlainRoute, Route, RouterInit } from './types.ts';
 
+/** Default router response. */
 const routerDefaultResponse = new Response('Not Found', {
 	status: 404,
 });
 
+/** Used to construct a route handler. */
 export class Router implements IRouter {
 	private routes: PlainRoute[];
 	private defaultResponse: Response;
@@ -59,6 +61,7 @@ export class Router implements IRouter {
 	}
 }
 
+/** Shortcut to create a new router handler. */
 export function httpRouter(init?: RouterInit): Handler {
 	return new Router(init).toHandler();
 }

@@ -1,3 +1,9 @@
+/**
+ * Deno std http router. Simple, close to the platform.
+ * 
+ * @module
+ */
+
 export * from './router/index.ts';
 export type {
 	DefaultHandlerParams,
