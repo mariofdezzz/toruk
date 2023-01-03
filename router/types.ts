@@ -1,4 +1,4 @@
-import type { ConnInfo, Handler } from 'http';
+import type { ConnInfo, Handler } from '../deps.ts';
 
 export interface RouterInit {
 	// deno-lint-ignore no-explicit-any

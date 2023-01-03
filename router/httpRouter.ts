@@ -1,4 +1,4 @@
-import { Handler } from 'http';
+import type { Handler } from '../deps.ts';
 import { Router } from './router.ts';
 import { RouterInit } from './types.ts';
 

@@ -1,4 +1,4 @@
-import type { Handler } from 'http';
+import type { Handler } from '../deps.ts';
 import type { IRouter, PlainRoute, Route, RouterInit } from './types.ts';
 
 /** Default router response. */
