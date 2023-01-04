@@ -84,7 +84,7 @@ export class Router implements IRouter {
 				}
 			}
 
-			return this.defaultResponse;
+			return this.defaultResponse.clone();
 		};
 	}
 
