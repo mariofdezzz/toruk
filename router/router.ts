@@ -73,10 +73,12 @@ export class Router implements IRouter {
 	toHandler(): Handler {
 		return (req, conn) => {
 			for (const route of this.routes) {
-				const match = route.pattern.exec(req.url);
+				const { pattern, handler, method = 'GET' } = route;
 
-				if (match && (!route.method || route.method === req.method)) {
-					return route.handler({
+				const match = pattern.exec(req.url);
+
+				if (match && method === req.method) {
+					return handler({
 						req,
 						conn,
 						params: match.pathname.groups,
