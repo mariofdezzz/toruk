@@ -19,14 +19,24 @@ export type RouteHandler<T = DefaultHandlerParams> = (
 
 export type DefaultHandlerParams = Record<string, string>;
 
+export type RouteAsFunction<T = DefaultHandlerParams> = (
+	path: string,
+	handler: RouteHandler<T>,
+) => IRouter;
+
 // Internal types
 export interface IRouter {
+	get: RouteAsFunction;
+	post: RouteAsFunction;
+	put: RouteAsFunction;
+	patch: RouteAsFunction;
+	delete: RouteAsFunction;
+
 	toHandler(): Handler;
-	// TODO: add get, post, put, delete methods
 }
 
-export interface PlainRoute {
+export interface PlainRoute<T> {
 	pattern: URLPattern;
-	handler: RouteHandler;
+	handler: RouteHandler<T>;
 	method?: string;
 }
