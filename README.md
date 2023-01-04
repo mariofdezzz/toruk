@@ -29,6 +29,23 @@ serve(router);
 
 ## Alternative Syntaxes
 
+### Express
+
+```ts
+import { serve } from 'https://deno.land/std/http/server.ts';
+import { httpRouter } from 'https://deno.land/x/toruk/mod.ts';
+
+const router = new Router()
+  .get('/', (req) => {
+    return new Response('Hello World');
+  })
+  .post<{ id: string }>('/users/:id', ({ params }) => {
+    return new Response('User: ' + params.id);
+  });
+
+serve(router);
+```
+
 ### Export/Import workflow
 
 `index.ts`
