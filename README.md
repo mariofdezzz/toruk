@@ -43,7 +43,7 @@ const router = new Router()
     return new Response('User: ' + params.id);
   });
 
-serve(router);
+serve(router.toHandler());
 ```
 
 ### Export/Import workflow
