@@ -7,9 +7,21 @@ export interface RouterInit {
 }
 
 export interface Route<T = DefaultHandlerParams> {
+	/**
+	 * Matching path. Avoid slash at the end.
+	 */
 	path: string;
+	/**
+	 * Handler function executed on match.
+	 */
 	handler: RouteHandler<T>;
+	/**
+	 * Array of http methods. If not provided or empty, all methods will be matched.
+	 */
 	methods?: string[];
+	/**
+	 * Children routes. Allows to create nested routes.
+	 */
 	children?: Route[];
 }
 
