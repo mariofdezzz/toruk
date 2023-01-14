@@ -9,7 +9,7 @@ export interface RouterInit {
 export interface Route<T = DefaultHandlerParams> {
 	path: string;
 	handler: RouteHandler<T>;
-	method?: string;
+	methods?: string[];
 	children?: Route[];
 }
 
@@ -38,5 +38,5 @@ export interface IRouter {
 export interface PlainRoute<T> {
 	pattern: URLPattern;
 	handler: RouteHandler<T>;
-	method?: string;
+	methods?: string[];
 }

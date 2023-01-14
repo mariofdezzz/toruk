@@ -29,7 +29,7 @@ export class Router implements IRouter {
 		path: string,
 		handler: RouteHandler<T>,
 	): Router {
-		this.addPlainRoute(path, handler, 'GET');
+		this.addPlainRoute(path, handler, ['GET']);
 
 		return this;
 	}
@@ -38,7 +38,7 @@ export class Router implements IRouter {
 		path: string,
 		handler: RouteHandler<T>,
 	): Router {
-		this.addPlainRoute(path, handler, 'POST');
+		this.addPlainRoute(path, handler, ['POST']);
 
 		return this;
 	}
@@ -47,7 +47,7 @@ export class Router implements IRouter {
 		path: string,
 		handler: RouteHandler<T>,
 	): Router {
-		this.addPlainRoute(path, handler, 'PUT');
+		this.addPlainRoute(path, handler, ['PUT']);
 
 		return this;
 	}
@@ -56,7 +56,7 @@ export class Router implements IRouter {
 		path: string,
 		handler: RouteHandler<T>,
 	): Router {
-		this.addPlainRoute(path, handler, 'PATCH');
+		this.addPlainRoute(path, handler, ['PATCH']);
 
 		return this;
 	}
@@ -65,7 +65,7 @@ export class Router implements IRouter {
 		path: string,
 		handler: RouteHandler<T>,
 	): Router {
-		this.addPlainRoute(path, handler, 'DELETE');
+		this.addPlainRoute(path, handler, ['DELETE']);
 
 		return this;
 	}
@@ -73,11 +73,11 @@ export class Router implements IRouter {
 	toHandler(): Handler {
 		return (req, conn) => {
 			for (const route of this.routes) {
-				const { pattern, handler, method = 'GET' } = route;
+				const { pattern, handler, methods } = route;
 
 				const match = pattern.exec(req.url);
 
-				if (match && method === req.method) {
+				if (match && (!methods || methods.includes(req.method))) {
 					return handler({
 						req,
 						conn,
@@ -98,7 +98,7 @@ export class Router implements IRouter {
 			return data.map((route) => this.getPlainRoutes(route)).flat();
 		}
 
-		const { path, handler, method, children } = data;
+		const { path, handler, methods, children } = data;
 
 		const extra: PlainRoute<any>[] =
 			children?.map((child) => this.getPlainRoutes(child, path)).flat() ?? [];
@@ -109,7 +109,7 @@ export class Router implements IRouter {
 					pathname: (parentPath ?? '') + path,
 				}),
 				handler,
-				method,
+				methods,
 			},
 			...extra,
 		];
@@ -118,14 +118,14 @@ export class Router implements IRouter {
 	private addPlainRoute<T>(
 		path: string,
 		handler: RouteHandler<T>,
-		method?: string,
+		methods?: string[],
 	): void {
 		const route: PlainRoute<T> = {
 			pattern: new URLPattern({
 				pathname: path,
 			}),
 			handler,
-			method,
+			methods,
 		};
 
 		this.routes.push(route);
