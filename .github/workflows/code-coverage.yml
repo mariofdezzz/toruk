@@ -2,7 +2,7 @@ on: push
 
 name: Code Coverage
 jobs:
-  test:
+  code-coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

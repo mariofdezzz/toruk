@@ -11,9 +11,9 @@ The easiest way to enjoy Deno.
 import { App } from 'https://deno.land/x/toruk/mod.ts'
 
 new App()
-	.get('/', () => new Response('Hello World'))
-	.get('/users/:id', ({ params }) => new Response(`User ${params.id}`))
-	.serve()
+ .get('/', () => new Response('Hello World'))
+ .get('/users/:id', ({ params }) => new Response(`User ${params.id}`))
+ .serve()
 ```
 
 Path uses [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URLPattern/URLPattern) matching.
@@ -24,12 +24,12 @@ Handler functions follow the same signature as [Deno's serve handler](https://de
 import { App } from 'https://deno.land/x/toruk/mod.ts'
 
 new App()
-	.post('/users/:id/posts', async ({ request, info, params }) => {
-		const body = await request.json()
+ .post('/users/:id/posts', async ({ request, info, params }) => {
+  const body = await request.json()
 
-		return new Response(`Post ${body.id} created for user ${params.id}`)
-	})
-	.serve()
+  return new Response(`Post ${body.id} created for user ${params.id}`)
+ })
+ .serve()
 ```
 
 ## Alternative Syntaxes
@@ -40,22 +40,22 @@ new App()
 import { App } from 'https://deno.land/x/toruk/mod.ts'
 
 new App({
-	router: {
-		routes: [
-			{
-				path: '/',
-				handler: () => new Response('Hello World'),
-				children: [
-					{
-						path: 'users/:id',
-						handler: ({ params }) => new Response(`User ${params.id}`),
-					},
-				],
-			},
-		],
-	},
+ router: {
+  routes: [
+   {
+    path: '/',
+    handler: () => new Response('Hello World'),
+    children: [
+     {
+      path: 'users/:id',
+      handler: ({ params }) => new Response(`User ${params.id}`),
+     },
+    ],
+   },
+  ],
+ },
 })
-	.serve()
+ .serve()
 ```
 
 ## Middlewares
@@ -65,7 +65,7 @@ import { App } from 'https://deno.land/x/toruk/mod.ts'
 import { cors } from 'https://deno.land/x/toruk/middlewares/mod.ts'
 
 new App()
-	.use(cors())
-	.get('/', () => new Response('Hello World'))
-	.serve()
+ .use(cors())
+ .get('/', () => new Response('Hello World'))
+ .serve()
 ```
