@@ -1,14 +1,8 @@
 /**
- * Deno std http router. Simple, close to the platform.
+ * Deno router fast, lightweight, close to runtime best practices.
+ * The easiest way to enjoy Deno.
  *
  * @module
  */
 
-export * from './router/router.ts';
-export * from './router/httpRouter.ts';
-export type {
-	DefaultHandlerParams,
-	Route,
-	RouteHandler,
-	RouterInit,
-} from './router/types.ts';
+export * from './src/index.ts'

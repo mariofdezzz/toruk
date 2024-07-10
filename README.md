@@ -1,74 +1,71 @@
 # Toruk
-Deno std http router. Simple, close to the platform.
+
+![Code Coverage](https://soft-deer-77.deno.dev)
+
+Deno router fast, lightweight, close to runtime best practices.
+The easiest way to enjoy Deno.
 
 ## Getting Started
 
+```ts
+import { App } from 'https://deno.land/x/toruk/mod.ts'
+
+new App()
+	.get('/', () => new Response('Hello World'))
+	.get('/users/:id', ({ params }) => new Response(`User ${params.id}`))
+	.serve()
+```
+
 Path uses [URLPattern](https://developer.mozilla.org/en-US/docs/Web/API/URLPattern/URLPattern) matching.
 
+Handler functions follow the same signature as [Deno's serve handler](https://deno.land/api@v1.44.4?s=Deno.ServeHandler).
+
 ```ts
-import { serve } from 'https://deno.land/std/http/server.ts';
-import { httpRouter } from 'https://deno.land/x/toruk/mod.ts';
+import { App } from 'https://deno.land/x/toruk/mod.ts'
 
-const router = httpRouter({
-  routes: [
-    {
-      path: '/',
-      handler: () => new Response('Hello World'),
-      children: [
-        {
-          path: 'users/:id',
-          handler: ({ params }) => new Response(`User ${params.id}`),
-        },
-      ],
-    },
-  ],
-});
+new App()
+	.post('/users/:id/posts', async ({ request, info, params }) => {
+		const body = await request.json()
 
-serve(router);
+		return new Response(`Post ${body.id} created for user ${params.id}`)
+	})
+	.serve()
 ```
 
 ## Alternative Syntaxes
 
-### Express
+### Object
 
 ```ts
-import { serve } from 'https://deno.land/std/http/server.ts';
-import { httpRouter } from 'https://deno.land/x/toruk/mod.ts';
+import { App } from 'https://deno.land/x/toruk/mod.ts'
 
-const router = new Router()
-  .get('/', (req) => {
-    return new Response('Hello World');
-  })
-  .post<{ id: string }>('/users/:id', ({ params }) => {
-    return new Response('User: ' + params.id);
-  });
-
-serve(router.toHandler());
+new App({
+	router: {
+		routes: [
+			{
+				path: '/',
+				handler: () => new Response('Hello World'),
+				children: [
+					{
+						path: 'users/:id',
+						handler: ({ params }) => new Response(`User ${params.id}`),
+					},
+				],
+			},
+		],
+	},
+})
+	.serve()
 ```
 
-### Export/Import workflow
-
-`index.ts`
+## Middlewares
 
 ```ts
-import { httpRouter } from 'https://deno.land/x/toruk/mod.ts';
-import * as users from './routes/users/:id.ts'
+import { App } from 'https://deno.land/x/toruk/mod.ts'
+import { cors } from 'https://deno.land/x/toruk/middlewares/mod.ts'
 
-const router = httpRouter({
-  routes: [
-    users
-  ]
-});
-```
-
-`routes/users/:id.ts`
-
-```ts
-import { RouteHandler } from 'https://deno.land/x/toruk/mod.ts';
-
-export const path = '/users/:id';
-
-export const handler: RouteHandler<{ id: string }> = ({ params }) => {
-  return new Response(`User ${params.id}`);
-};
+new App()
+	.use(cors())
+	.get('/', () => new Response('Hello World'))
+	.serve()
 ```
