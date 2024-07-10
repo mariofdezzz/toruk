@@ -15,7 +15,8 @@ jobs:
         run: deno task coverage:generate
 
       - name: Report coverage
-        run: curl -f -L 'https://soft-deer-77.deno.dev' -H 'Content-Type: application/json' -H "Authorization: Bearer $COVERAGE_TOKEN" -d "{\"coverage\": $(deno task -q coverage:report | grep -Eo '[0-9]+\.[0-9]+' | tail -1)}"
+        run: |
+          curl -f -L 'https://soft-deer-77.deno.dev' -H 'Content-Type: application/json' -H "Authorization: Bearer $COVERAGE_TOKEN" -d "{\"coverage\": $(deno task -q coverage:report | grep -Eo '[0-9]+\.[0-9]+' | tail -1)}"
         env:
           COVERAGE_TOKEN: ${{ secrets.COVERAGE_TOKEN }}
 
