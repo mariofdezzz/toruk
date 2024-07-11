@@ -24,24 +24,27 @@ function _getPlainRoutes(
 	const plainRoutes = routes.map((route) => {
 		const { path, handler, method, methods, children, use } = route
 		const middelwares = _parentMiddlewares.concat(use ?? [])
+		const fullpath = (parent?.path ?? '') + path
 
-		const plainRoute: PlainRoute = {
-			pattern: new URLPattern({
-				pathname: (parent?.path ?? '') + path,
-			}),
-			handler,
-			methods: method ? [method] : methods ?? ['GET'],
-			middelwares,
-		}
+		const plainRoute: PlainRoute | undefined = handler
+			? {
+				pattern: new URLPattern({
+					pathname: fullpath,
+				}),
+				handler,
+				methods: method ? [method] : methods ?? ['GET'],
+				middelwares,
+			}
+			: undefined
 		const extra: PlainRoute[] = children !== undefined && children.length > 0
-			? _getPlainRoutes(children, { path, middelwares })
+			? _getPlainRoutes(children, { path: fullpath, middelwares })
 			: []
 
 		return [
 			plainRoute,
 			...extra,
 		]
-	}).flat()
+	}).flat().filter((route): route is PlainRoute => route !== undefined)
 
 	return plainRoutes
 }
