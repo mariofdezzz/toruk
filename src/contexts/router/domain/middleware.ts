@@ -1,5 +1,5 @@
-import { MiddlewareNextFunction } from './middleware-next-function.ts'
-import { RouteParams } from './route-params.ts'
+import type { MiddlewareNextFunction } from './middleware-next-function.ts'
+import type { RouteParams } from './route-params.ts'
 
 export type Middleware = (args: {
 	request: Request

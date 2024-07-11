@@ -1,6 +1,6 @@
-import { Middleware } from './middleware.ts'
-import { RouteHandler } from './route-handler.ts'
-import { RouteMethod } from './route-method.ts'
+import type { Middleware } from './middleware.ts'
+import type { RouteHandler } from './route-handler.ts'
+import type { RouteMethod } from './route-method.ts'
 
 export interface Route<Path extends string = string> {
 	/**

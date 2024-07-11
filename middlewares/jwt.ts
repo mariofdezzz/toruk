@@ -1,8 +1,8 @@
-import { Middleware } from '@/router/domain/middleware.ts'
-import { decodeBase64Url } from 'std/encoding/base64url.ts'
-import { ALGORITHMS } from '~/jwt/algorithms.ts'
-import { getTokenFromCookie } from '~/jwt/get-token-from-cookie.ts'
-import { getTokenFromHeader } from '~/jwt/get-token-from-header.ts'
+import type { Middleware } from '../src/contexts/router/domain/middleware.ts'
+import { decodeBase64Url } from '../src/deps.ts'
+import { ALGORITHMS } from './jwt/algorithms.ts'
+import { getTokenFromCookie } from './jwt/get-token-from-cookie.ts'
+import { getTokenFromHeader } from './jwt/get-token-from-header.ts'
 
 export type JwtOptions = {
 	secret?: string

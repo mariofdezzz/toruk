@@ -1,5 +1,5 @@
-import { Middleware } from './middleware.ts'
-import { Route } from './route.ts'
+import type { Middleware } from './middleware.ts'
+import type { Route } from './route.ts'
 
 export type RouteArray<T> = {
 	[K in keyof T]: T[K] extends string ? Route<T[K]> : never

@@ -1,6 +1,6 @@
-import { AppConfig } from '@/app/domain/app-config.ts'
-import { Middleware } from '@/router/domain/middleware.ts'
-import { RouteHandler } from '@/router/domain/route-handler.ts'
+import type { AppConfig } from '../contexts/app/domain/app-config.ts'
+import type { Middleware } from '../contexts/router/domain/middleware.ts'
+import type { RouteHandler } from '../contexts/router/domain/route-handler.ts'
 import { Router } from './router.ts'
 
 export class App<T extends Array<string>> {

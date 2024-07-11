@@ -1,11 +1,11 @@
-import { findRoute } from '@/router/application/find-route.ts'
-import { getDefaultResponse } from '@/router/application/get-default-response.ts'
-import { getPlainRoutes } from '@/router/application/get-plain-routes.ts'
-import { linkMiddlewaresToHandler } from '@/router/application/link-middlewares.ts'
-import { Middleware } from '@/router/domain/middleware.ts'
-import { RouteHandler } from '@/router/domain/route-handler.ts'
-import { Route } from '@/router/domain/route.ts'
-import { RouterConfig } from '@/router/domain/router-config.ts'
+import { findRoute } from '../contexts/router/application/find-route.ts'
+import { getDefaultResponse } from '../contexts/router/application/get-default-response.ts'
+import { getPlainRoutes } from '../contexts/router/application/get-plain-routes.ts'
+import { linkMiddlewaresToHandler } from '../contexts/router/application/link-middlewares.ts'
+import type { Middleware } from '../contexts/router/domain/middleware.ts'
+import type { RouteHandler } from '../contexts/router/domain/route-handler.ts'
+import type { Route } from '../contexts/router/domain/route.ts'
+import type { RouterConfig } from '../contexts/router/domain/router-config.ts'
 
 export class Router<T extends Array<string>> {
 	private readonly routes: Route[] = []

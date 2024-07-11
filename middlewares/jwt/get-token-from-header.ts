@@ -1,4 +1,4 @@
-import { RawToken } from '~/jwt/raw-token.ts'
+import { RawToken } from './raw-token.ts'
 
 export function getTokenFromHeader(request: Request): RawToken | null {
 	const auth = request.headers.get('Authorization')

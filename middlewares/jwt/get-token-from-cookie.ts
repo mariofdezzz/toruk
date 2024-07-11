@@ -1,4 +1,4 @@
-import { RawToken } from '~/jwt/raw-token.ts'
+import { RawToken } from './raw-token.ts'
 
 export function getTokenFromCookie(
 	cookieName: string,

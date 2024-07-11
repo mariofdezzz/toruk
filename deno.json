@@ -1,5 +1,4 @@
 {
-  "importMap": "./import_map.json",
   "tasks": {
     "test": "deno test --allow-net tests/**/*",
     "coverage:generate": "deno test --allow-net --coverage tests/**/*",
@@ -12,5 +11,9 @@
     "singleQuote": true,
     "proseWrap": "preserve",
     "semiColons": false
+  },
+  "imports": {
+    "assert": "https://deno.land/std@0.224.0/assert/mod.ts",
+    "mock": "https://deno.land/std@0.224.0/testing/mock.ts"
   }
 }
