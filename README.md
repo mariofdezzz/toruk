@@ -1,6 +1,6 @@
 # Toruk
 
-![Code Coverage](https://soft-deer-77.deno.dev)
+![Code Coverage](https://soft-deer-77.deno.dev/?last)
 
 Deno router fast, lightweight, close to runtime best practices.
 The easiest way to enjoy Deno.
