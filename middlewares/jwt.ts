@@ -1,8 +1,9 @@
-import type { Middleware } from '../src/contexts/router/domain/middleware.ts'
+import type { Middleware } from '../src/contexts/middleware/domain/middleware.ts'
 import { decodeBase64Url } from '../src/deps.ts'
 import { ALGORITHMS } from './jwt/algorithms.ts'
 import { getTokenFromCookie } from './jwt/get-token-from-cookie.ts'
 import { getTokenFromHeader } from './jwt/get-token-from-header.ts'
+import { JWT } from './jwt/jwt.ts'
 
 export type JwtOptions = {
 	secret?: string
@@ -29,7 +30,7 @@ export function jwt(options: JwtOptions = {}): Middleware {
 	return async function ({ request, next }) {
 		const token = cookie
 			? getTokenFromCookie(cookie, request)
-			: getTokenFromHeader(request)
+			: new JWT(getTokenFromHeader(request)!) // FIXME
 
 		if (token) {
 			const { header, payload, signature } = token

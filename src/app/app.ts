@@ -1,12 +1,18 @@
-import type { AppConfig } from '../contexts/app/domain/app-config.ts'
-import type { Middleware } from '../contexts/router/domain/middleware.ts'
-import type { RouteHandler } from '../contexts/router/domain/route-handler.ts'
+import type {
+	AppConfigRaw,
+	AppConfigRouterInstance,
+} from '../contexts/app/domain/app-config.ts'
+import { AppInterface } from '../contexts/app/domain/app-interface.ts'
+import type { Middleware } from '../contexts/middleware/domain/middleware.ts'
+import { RouteHandler } from '../contexts/route-handler/route-handler.ts'
 import { Router } from './router.ts'
 
-export class App<T extends Array<string>> {
+export class App<T extends Array<string>> implements AppInterface {
 	private readonly router: Router<T>
 
-	constructor({ router }: AppConfig<T> = {}) {
+	constructor(config?: AppConfigRaw<T>)
+	constructor(config?: AppConfigRouterInstance<T>)
+	constructor({ router }: AppConfigRouterInstance<T> | AppConfigRaw<T> = {}) {
 		if (router instanceof Router) {
 			this.router = router
 		} else {
@@ -14,12 +20,6 @@ export class App<T extends Array<string>> {
 		}
 	}
 
-	get<T extends string>(path: T, handler: RouteHandler<T>): this
-	get<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	get(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
@@ -34,12 +34,6 @@ export class App<T extends Array<string>> {
 		return this
 	}
 
-	post<T extends string>(path: T, handler: RouteHandler<T>): this
-	post<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	post(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
@@ -54,12 +48,6 @@ export class App<T extends Array<string>> {
 		return this
 	}
 
-	put<T extends string>(path: T, handler: RouteHandler<T>): this
-	put<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	put(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
@@ -74,12 +62,6 @@ export class App<T extends Array<string>> {
 		return this
 	}
 
-	patch<T extends string>(path: T, handler: RouteHandler<T>): this
-	patch<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	patch(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
@@ -94,12 +76,6 @@ export class App<T extends Array<string>> {
 		return this
 	}
 
-	delete<T extends string>(path: T, handler: RouteHandler<T>): this
-	delete<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	delete(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
@@ -120,8 +96,6 @@ export class App<T extends Array<string>> {
 		return this
 	}
 
-	serve(): Deno.HttpServer<Deno.NetAddr>
-	serve(options: Deno.ServeOptions): Deno.HttpServer<Deno.NetAddr>
 	serve(options?: Deno.ServeOptions): Deno.HttpServer<Deno.NetAddr> {
 		const handler = this.router.toHandler()
 

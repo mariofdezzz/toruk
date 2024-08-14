@@ -1,6 +1,6 @@
-import type { Middleware } from '../domain/middleware.ts'
+import type { Middleware } from '../../middleware/domain/middleware.ts'
+import type { Route } from '../../route/domain/route.ts'
 import type { PlainRoute } from '../domain/plain-route.ts'
-import type { Route } from '../domain/route.ts'
 
 /**
  * Precumpute routes

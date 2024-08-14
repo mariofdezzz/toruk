@@ -1,8 +1,8 @@
-import type { Middleware } from '../domain/middleware.ts'
+import type { Middleware } from '../../middleware/domain/middleware.ts'
+import type { RouteHandler } from '../../route-handler/domain/route-handler.ts'
+import type { RouteMethod } from '../../route-method/domain/route-method.ts'
+import type { RouteParams } from '../../route-params/domain/route-params.ts'
 import type { PlainRoute } from '../domain/plain-route.ts'
-import type { RouteHandler } from '../domain/route-handler.ts'
-import type { RouteMethod } from '../domain/route-method.ts'
-import type { RouteParams } from '../domain/route-params.ts'
 
 export function findRoute(
 	request: Request,

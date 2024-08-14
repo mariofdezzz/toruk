@@ -1,117 +1,70 @@
-import { findRoute } from '../contexts/router/application/find-route.ts'
+import type { Middleware } from '../contexts/middleware/domain/middleware.ts'
+import { RouteHandler } from '../contexts/route-handler/route-handler.ts'
+import { RouteMatcher as RouteMatcherI } from '../contexts/route-matcher/domain/route-matcher.ts'
+import { RouteMethod } from '../contexts/route-method/domain/route-method.ts'
+import type { Route } from '../contexts/route/domain/route.ts'
 import { getDefaultResponse } from '../contexts/router/application/get-default-response.ts'
-import { getPlainRoutes } from '../contexts/router/application/get-plain-routes.ts'
-import { linkMiddlewaresToHandler } from '../contexts/router/application/link-middlewares.ts'
-import type { Middleware } from '../contexts/router/domain/middleware.ts'
-import type { RouteHandler } from '../contexts/router/domain/route-handler.ts'
-import type { Route } from '../contexts/router/domain/route.ts'
 import type { RouterConfig } from '../contexts/router/domain/router-config.ts'
+import { RouterInterface } from '../contexts/router/domain/router-interface.ts'
+import { RouteMatcher } from './container/route-matcher.ts'
 
-export class Router<T extends Array<string>> {
+export class Router<T extends Array<string>> implements RouterInterface {
 	private readonly routes: Route[] = []
 	private readonly middlewares: Middleware[] = []
+	private routeMatcher: RouteMatcherI
 
 	constructor({ routes, use }: RouterConfig<T> = {}) {
 		if (routes) this.routes = routes
 		if (use) this.middlewares = use
+		this.routeMatcher = new RouteMatcher(this.routes, this.middlewares)
 	}
 
-	get<T extends string>(path: T, handler: RouteHandler<T>): this
-	get<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	get(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
 		maybeHandler?: RouteHandler,
 	): this {
-		const [middlewares, handler] = this.getParams(
-			middlewaresOrHandler,
-			maybeHandler,
-		)
-		this.routes.push({ path, handler, use: middlewares })
+		this.pushRoute(path, 'GET', middlewaresOrHandler, maybeHandler)
 
 		return this
 	}
 
-	post<T extends string>(path: T, handler: RouteHandler<T>): this
-	post<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	post(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
 		maybeHandler?: RouteHandler,
 	): this {
-		const [middlewares, handler] = this.getParams(
-			middlewaresOrHandler,
-			maybeHandler,
-		)
-		this.routes.push({ path, handler, use: middlewares, method: 'POST' })
+		this.pushRoute(path, 'POST', middlewaresOrHandler, maybeHandler)
 
 		return this
 	}
 
-	put<T extends string>(path: T, handler: RouteHandler<T>): this
-	put<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	put(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
 		maybeHandler?: RouteHandler,
 	): this {
-		const [middlewares, handler] = this.getParams(
-			middlewaresOrHandler,
-			maybeHandler,
-		)
-		this.routes.push({ path, handler, use: middlewares, method: 'PUT' })
+		this.pushRoute(path, 'PUT', middlewaresOrHandler, maybeHandler)
 
 		return this
 	}
 
-	patch<T extends string>(path: T, handler: RouteHandler<T>): this
-	patch<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	patch(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
 		maybeHandler?: RouteHandler,
 	): this {
-		const [middlewares, handler] = this.getParams(
-			middlewaresOrHandler,
-			maybeHandler,
-		)
-		this.routes.push({ path, handler, use: middlewares, method: 'PATCH' })
+		this.pushRoute(path, 'PATCH', middlewaresOrHandler, maybeHandler)
 
 		return this
 	}
 
-	delete<T extends string>(path: T, handler: RouteHandler<T>): this
-	delete<T extends string>(
-		path: T,
-		use: Middleware[],
-		handler: RouteHandler<T>,
-	): this
 	delete(
 		path: string,
 		middlewaresOrHandler: Middleware[] | RouteHandler,
 		maybeHandler?: RouteHandler,
 	): this {
-		const [middlewares, handler] = this.getParams(
-			middlewaresOrHandler,
-			maybeHandler,
-		)
-		this.routes.push({ path, handler, use: middlewares, method: 'DELETE' })
+		this.pushRoute(path, 'DELETE', middlewaresOrHandler, maybeHandler)
 
 		return this
 	}
@@ -123,22 +76,31 @@ export class Router<T extends Array<string>> {
 	}
 
 	toHandler(): Deno.ServeHandler {
-		const plainRoutes = getPlainRoutes(this.routes, this.middlewares)
-
 		return async (request, info) => {
-			const found = findRoute(request, plainRoutes)
+			const match = this.routeMatcher.match(request.url, request.method)
 
-			if (!found) return getDefaultResponse()
-			const { handler, params, middelwares } = found
+			if (match) {
+				const { handler, params } = match
 
-			const next = linkMiddlewaresToHandler(
-				handler,
-				middelwares,
-				{ request, info, params },
-			)
+				return await handler({ request, info, params })
+			}
 
-			return await next()
+			return getDefaultResponse()
 		}
+	}
+
+	private pushRoute(
+		path: string,
+		method: RouteMethod,
+		middlewaresOrHandler: Middleware[] | RouteHandler,
+		maybeHandler?: RouteHandler,
+	): void {
+		const [middlewares, handler] = this.getParams(
+			middlewaresOrHandler,
+			maybeHandler,
+		)
+		this.routes.push({ path, handler, use: middlewares, method })
+		this.routeMatcher = new RouteMatcher(this.routes, this.middlewares)
 	}
 
 	private getParams(

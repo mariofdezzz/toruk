@@ -1,7 +1,7 @@
-import { MiddlewareNextFunction } from '../domain/middleware-next-function.ts'
-import { Middleware } from '../domain/middleware.ts'
-import { RouteHandler } from '../domain/route-handler.ts'
-import { RouteParams } from '../domain/route-params.ts'
+import { MiddlewareNextFunction } from '../../middleware/domain/middleware-next-function.ts'
+import { Middleware } from '../../middleware/domain/middleware.ts'
+import { RouteHandler } from '../../route-handler/domain/route-handler.ts'
+import { RouteParams } from '../../route-params/domain/route-params.ts'
 
 export function linkMiddlewaresToHandler(
 	handler: RouteHandler,
@@ -12,13 +12,15 @@ export function linkMiddlewaresToHandler(
 		params: RouteParams<any>
 	},
 ): MiddlewareNextFunction {
-	const next = () => handler(args)
+	const next = (middlewareArgs: Record<string, unknown> = {}) =>
+		handler({ ...middlewareArgs, ...args })
 
 	if (middlewares.length === 0) return next
 
 	return middlewares.reduce<MiddlewareNextFunction>(
 		(next, middleware) => {
-			return (() => middleware({ ...args, next }))
+			return ((middlewareArgs: Record<string, unknown> = {}) =>
+				middleware({ ...middlewareArgs, ...args, next }))
 		},
 		next,
 	)

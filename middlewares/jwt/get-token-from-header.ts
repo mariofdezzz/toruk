@@ -1,19 +1,11 @@
-import { RawToken } from './raw-token.ts'
-
-export function getTokenFromHeader(request: Request): RawToken | null {
+export function getTokenFromHeader(request: Request): string | null {
 	const auth = request.headers.get('Authorization')
 
 	if (auth) {
 		const [type, token] = auth.split(' ')
 
 		if (['Bearer', 'Basic'].includes(type)) {
-			const [header, payload, signature] = token.split('.')
-
-			return {
-				header,
-				payload,
-				signature,
-			}
+			return token
 		}
 	}
 
