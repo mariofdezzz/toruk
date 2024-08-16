@@ -1,5 +1,5 @@
 export type MiddlewareNextFunction<
   T extends Record<string, unknown> = Record<string, never>,
 > = (
-  payload: T,
+  payload?: T,
 ) => Response | Promise<Response>

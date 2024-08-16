@@ -1,5 +1,5 @@
 import type { Middleware } from '../src/contexts/middleware/domain/middleware.ts'
-import type { RouteHandler } from '../src/contexts/route-handler/domain/route-handler.ts'
+import { RouteHandler } from '../src/contexts/route-handler/route-handler.ts'
 
 type OriginFunction = (args: Parameters<RouteHandler>[0]) => string
 
