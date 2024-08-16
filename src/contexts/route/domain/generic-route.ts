@@ -3,7 +3,10 @@ import { RouteHandler } from '../../route-handler/route-handler.ts'
 import type { RouteMethod } from '../../route-method/domain/route-method.ts'
 import type { Route } from '../domain/route.ts'
 
-export type GenericRoute<Path extends string = string> = {
+export type GenericRoute<
+  Path extends string = string,
+  Uses extends Record<string, unknown>[] = [],
+> = {
   /**
    * Matching path. Avoid slash at the end.
    */
@@ -11,7 +14,7 @@ export type GenericRoute<Path extends string = string> = {
   /**
    * Handler function executed on match.
    */
-  handler: RouteHandler<Path>
+  handler: RouteHandler<Path, Uses>
   /**
    * HTTP method to be matched. Defaults to GET.
    */

@@ -1,17 +1,7 @@
-export type UseFirebase = {
+import { FirebaseJWTPayload } from '../jwt/firebase/firebase-jwt-payload.ts'
+
+export type UseFirebase<ExtraPayload extends Record<string, unknown> = {}> = {
   jwt: {
-    payload: {
-      name: string
-      picture: string
-      iss: string
-      aud: string
-      auth_time: number
-      user_id: string
-      sub: string
-      iat: number
-      exp: number
-      email: string
-      email_verified: boolean
-    }
+    payload: FirebaseJWTPayload & ExtraPayload
   }
 }

@@ -1,7 +1,7 @@
 // deno-lint-ignore-file ban-types
 import { RouteHandlerBaseArgs } from './route-handler-base-args.ts'
 
-type RHAKeys = keyof RouteHandlerBaseArgs<string>
+type RHBAKeys = keyof RouteHandlerBaseArgs<string>
 
 type MiddlewareJoin<T extends Record<string, unknown>[]> = T extends
   [infer First, ...infer Rest]
@@ -13,4 +13,4 @@ export type RouteHandlerArgs<
   Uses extends Record<string, unknown>[] = [],
 > =
   & RouteHandlerBaseArgs<Path>
-  & Omit<MiddlewareJoin<Uses>, RHAKeys>
+  & Omit<MiddlewareJoin<Uses>, RHBAKeys>

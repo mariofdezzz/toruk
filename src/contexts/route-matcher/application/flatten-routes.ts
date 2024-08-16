@@ -1,3 +1,4 @@
+import { join } from '../../../deps.ts'
 import { Middleware } from '../../middleware/domain/middleware.ts'
 import { Route } from '../../route/domain/route.ts'
 import { FlatRoute } from '../domain/flat-route.ts'
@@ -24,7 +25,7 @@ function _flattenRoutes(routes: Route[], parent: {
       children,
       use: routeUse = [],
     } = route
-    const fullpath = parentPath + path
+    const fullpath = join(parentPath, path.length > 0 ? path : '/')
     const use = parentUse.concat(routeUse)
 
     const flatRoute: FlatRoute = {
