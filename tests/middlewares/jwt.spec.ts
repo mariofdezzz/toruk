@@ -1,7 +1,8 @@
-import { Middleware } from '@/router/domain/middleware.ts'
 import { assertEquals, assertExists, assertInstanceOf } from 'assert'
 import { assertSpyCall, assertSpyCalls, spy } from 'mock'
-import { jwt } from '~/jwt.ts'
+
+import { jwt } from '../../middlewares/mod.ts'
+import { Middleware } from '../../mod.ts'
 
 const secret = 'your-256-bit-secret'
 const auth =

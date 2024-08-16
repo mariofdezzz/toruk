@@ -1,7 +1,7 @@
-import { Middleware } from '@/router/domain/middleware.ts'
 import { assertExists, assertInstanceOf } from 'assert'
 import { assertSpyCall, assertSpyCalls, spy } from 'mock'
-import { cors } from '~/cors.ts'
+import { cors } from '../../middlewares/mod.ts'
+import { Middleware } from '../../mod.ts'
 
 Deno.test('Middleware should be a function', () => {
 	const middleware = cors()
