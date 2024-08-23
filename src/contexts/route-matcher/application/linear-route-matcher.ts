@@ -16,7 +16,9 @@ export class LinearRouteMatcher implements RouteMatcher {
 
   match(url: string, method: RouteMethod): RouteMatchResult | undefined {
     const route = this.routes.find(
-      ({ pattern, methods }) => pattern.test(url) && methods.includes(method),
+      ({ pattern, methods }) =>
+        pattern.test(url) &&
+        (methods.includes(method) || methods.includes('*')),
     )
 
     if (route) {
