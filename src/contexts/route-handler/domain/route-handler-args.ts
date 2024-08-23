@@ -1,5 +1,5 @@
 // deno-lint-ignore-file ban-types
-import { RouteHandlerBaseArgs } from './route-handler-base-args.ts'
+import { RouteHandlerBaseArgs } from '../domain/route-handler-base-args.ts'
 
 type RHBAKeys = keyof RouteHandlerBaseArgs<string>
 

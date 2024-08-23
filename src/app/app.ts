@@ -4,7 +4,7 @@ import type {
 } from '../contexts/app/domain/app-config.ts'
 import { AppInterface } from '../contexts/app/domain/app-interface.ts'
 import type { Middleware } from '../contexts/middleware/domain/middleware.ts'
-import { RouteHandler } from '../contexts/route-handler/route-handler.ts'
+import { RouteHandler } from '../contexts/route-handler/domain/route-handler.ts'
 import { Router } from './router.ts'
 
 export class App<T extends Array<string>> implements AppInterface {

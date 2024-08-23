@@ -1,5 +1,5 @@
 import { Middleware } from '../../middleware/domain/middleware.ts'
-import { RouteHandler } from '../../route-handler/route-handler.ts'
+import { RouteHandler } from '../../route-handler/domain/route-handler.ts'
 
 export interface RouterConfigChaining {
   get<T extends string>(path: T, handler: RouteHandler<T>): this

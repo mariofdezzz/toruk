@@ -1,5 +1,5 @@
 import { Middleware } from '../../middleware/domain/middleware.ts'
-import { RouteHandler } from '../../route-handler/route-handler.ts'
+import { RouteHandler } from '../../route-handler/domain/route-handler.ts'
 import { RouteMethod } from '../../route-method/domain/route-method.ts'
 import { Route } from '../../route/domain/route.ts'
 import { PrecomputedRoute } from '../domain/precomputed-route.ts'

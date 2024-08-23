@@ -1,4 +1,4 @@
-import { RouteHandler } from '../../route-handler/route-handler.ts'
+import { RouteHandler } from '../../route-handler/domain/route-handler.ts'
 import { RouteParams } from '../../route-params/domain/route-params.ts'
 
 export type RouteMatchResult = {

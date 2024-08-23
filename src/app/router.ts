@@ -1,5 +1,5 @@
 import type { Middleware } from '../contexts/middleware/domain/middleware.ts'
-import { RouteHandler } from '../contexts/route-handler/route-handler.ts'
+import { RouteHandler } from '../contexts/route-handler/domain/route-handler.ts'
 import { RouteMatcher as RouteMatcherI } from '../contexts/route-matcher/domain/route-matcher.ts'
 import { RouteMethod } from '../contexts/route-method/domain/route-method.ts'
 import type { Route } from '../contexts/route/domain/route.ts'
