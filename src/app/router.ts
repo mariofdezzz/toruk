@@ -12,11 +12,16 @@ export class Router<T extends Array<string>> implements RouterInterface {
 	private readonly routes: Route[] = []
 	private readonly middlewares: Middleware[] = []
 	private routeMatcher: RouteMatcherI
+	private readonly notFoundHandler: RouteHandler
 
 	constructor({ routes, use }: RouterConfig<T> = {}) {
 		if (routes) this.routes = routes
 		if (use) this.middlewares = use
 		this.routeMatcher = new RouteMatcher(this.routes, this.middlewares)
+		this.notFoundHandler = this.buildHandler(
+			getDefaultResponse,
+			this.middlewares,
+		)
 	}
 
 	get(
@@ -85,7 +90,7 @@ export class Router<T extends Array<string>> implements RouterInterface {
 				return await handler({ request, info, params })
 			}
 
-			return getDefaultResponse()
+			return this.notFoundHandler({ request, info, params: {} })
 		}
 	}
 
@@ -115,5 +120,21 @@ export class Router<T extends Array<string>> implements RouterInterface {
 			: middlewaresOrHandler
 
 		return [middlewares, handler]
+	}
+
+	private buildHandler(
+		handler: RouteHandler,
+		use: Middleware[] = [],
+	): RouteHandler {
+		const execute = use.reduce<RouteHandler>(
+			(next, middleware) => (args) =>
+				middleware({
+					...args,
+					next: (payload) => next({ ...args, ...payload }),
+				}),
+			(args) => handler(args),
+		)
+
+		return execute
 	}
 }
