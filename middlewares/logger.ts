@@ -1,6 +1,7 @@
 import { Middleware } from '../src/contexts/middleware/domain/middleware.ts'
-import { colors } from '../src/deps.ts'
+import { colors, duration } from '../src/deps.ts'
 const { blue, green, red } = colors
+const { format } = duration
 
 export function logger(): Middleware {
   return async function ({ request, next }) {
@@ -11,13 +12,14 @@ export function logger(): Middleware {
       ? ' ' + HttpStatusTexts[response.status as keyof typeof HttpStatusTexts]
       : ''
     const status = response.status + statusText
+    const elapsed = format(end - start, { ignoreZero: true })
 
     console.log(
       [
         blue(`[${request.method}]`),
         new URL(request.url).pathname,
         status.startsWith('2') ? green(status) : red(status),
-        `${end - start}ms`,
+        elapsed.length > 0 ? elapsed : '0ms',
       ].join('\t'),
     )
 
