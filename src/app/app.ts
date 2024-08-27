@@ -1,18 +1,15 @@
-import type {
-	AppConfigRaw,
-	AppConfigRouterInstance,
-} from '../contexts/app/domain/app-config.ts'
 import { AppInterface } from '../contexts/app/domain/app-interface.ts'
 import type { Middleware } from '../contexts/middleware/domain/middleware.ts'
 import { RouteHandler } from '../contexts/route-handler/domain/route-handler.ts'
+import { RouterConfig } from '../contexts/router/domain/router-config.ts'
 import { Router } from './router.ts'
 
 export class App<T extends Array<string>> implements AppInterface {
 	private readonly router: Router<T>
 
-	constructor(config?: AppConfigRaw<T>)
-	constructor(config?: AppConfigRouterInstance<T>)
-	constructor({ router }: AppConfigRouterInstance<T> | AppConfigRaw<T> = {}) {
+	constructor(config?: RouterConfig<T>)
+	constructor(router?: Router<T>)
+	constructor(router: RouterConfig<T> | Router<T> = {}) {
 		if (router instanceof Router) {
 			this.router = router
 		} else {
