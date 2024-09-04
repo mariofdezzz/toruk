@@ -36,12 +36,14 @@ export function jwt(options: JwtOptions): Middleware {
 			: getTokenFromHeader(request)
 
 		if (token) {
+			let verified = false
 			try {
 				const jwt = new JWT(token)
-				const verified = await jwt.verify(await key, verify)
-
-				if (verified) return await next()
+				verified = await jwt.verify(await key, verify)
+				// deno-lint-ignore no-empty
 			} catch {}
+
+			if (verified) return await next()
 		}
 
 		return new Response('Unauthorized', { status: 401 })
