@@ -1,8 +1,12 @@
 import { decodeBase64Url } from '../../src/deps.ts'
 
+type Header = {
+  typ: 'JWT'
+  alg: string
+}
+
 export class JWT<
-  Header extends Record<string, unknown>,
-  Payload extends Record<string, unknown>,
+  Payload extends Record<string, unknown> = Record<string, unknown>,
 > {
   readonly header: Header
   readonly payload: Payload
