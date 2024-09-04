@@ -40,7 +40,7 @@ export function jwt(options: JwtOptions): Middleware {
 			let verified = false
 
 			try {
-				const jwt = new JWT(token)
+				jwt = new JWT(token)
 				verified = await jwt.verify(await key, verify)
 				// deno-lint-ignore no-empty
 			} catch {}
