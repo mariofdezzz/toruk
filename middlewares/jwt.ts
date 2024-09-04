@@ -1,21 +1,24 @@
 import type { Middleware } from '../src/contexts/middleware/domain/middleware.ts'
-import { decodeBase64Url } from '../src/deps.ts'
 import { ALGORITHMS } from './jwt/algorithms.ts'
 import { getTokenFromCookie } from './jwt/get-token-from-cookie.ts'
 import { getTokenFromHeader } from './jwt/get-token-from-header.ts'
 import { JWT } from './jwt/jwt.ts'
 
+export * from './jwt/use-jwt.ts'
+
 export type JwtOptions = {
-	secret?: string
+	secret: string
 	cookie?: string
 	algorithm?: keyof typeof ALGORITHMS
+	verify?: string[]
 }
 
-export function jwt(options: JwtOptions = {}): Middleware {
+export function jwt(options: JwtOptions): Middleware {
 	const {
-		secret = Deno.env.get('JWT_SECRET'),
+		secret,
 		cookie,
 		algorithm = 'HS256',
+		verify = [],
 	} = options
 	const importKeyAlgorithm = ALGORITHMS[algorithm]
 
@@ -30,19 +33,15 @@ export function jwt(options: JwtOptions = {}): Middleware {
 	return async function ({ request, next }) {
 		const token = cookie
 			? getTokenFromCookie(cookie, request)
-			: new JWT(getTokenFromHeader(request)!) // FIXME
+			: getTokenFromHeader(request)
 
 		if (token) {
-			const { header, payload, signature } = token
+			try {
+				const jwt = new JWT(token)
+				const verified = await jwt.verify(await key, verify)
 
-			const verified = await crypto.subtle.verify(
-				'HMAC',
-				await key,
-				decodeBase64Url(signature),
-				new TextEncoder().encode([header, payload].join('.')),
-			)
-
-			if (verified) return await next()
+				if (verified) return await next()
+			} catch {}
 		}
 
 		return new Response('Unauthorized', { status: 401 })

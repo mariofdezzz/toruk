@@ -1,9 +1,7 @@
-import { RawToken } from './raw-token.ts'
-
 export function getTokenFromCookie(
 	cookieName: string,
 	request: Request,
-): RawToken | null {
+): string | null {
 	const cookieHeader = request.headers.get('Cookie')
 
 	if (cookieHeader) {
@@ -14,13 +12,7 @@ export function getTokenFromCookie(
 			const [_, cookieValue] = cookie.split('=')
 			const cookieValueDecoded = decodeURIComponent(cookieValue)
 
-			const [header, payload, signature] = cookieValueDecoded.split('.')
-
-			return {
-				header,
-				payload,
-				signature,
-			}
+			return cookieValueDecoded
 		}
 	}
 

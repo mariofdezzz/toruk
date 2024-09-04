@@ -51,7 +51,7 @@ export class LinearRouteMatcher implements RouteMatcher {
     handler: RouteHandler,
     use: Middleware[] = [],
   ): RouteHandler {
-    const execute = use.reduce<RouteHandler>(
+    const execute = use.toReversed().reduce<RouteHandler>(
       (next, middleware) => (args) =>
         middleware({
           ...args,
