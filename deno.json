@@ -1,4 +1,7 @@
 {
+  "name": "@toruk/core",
+  "version": "0.4.10",
+  "exports": "./mod.ts",
   "tasks": {
     "test": "deno test --allow-net tests/**/*",
     "coverage:generate": "deno test --allow-net --coverage tests/**/*",
